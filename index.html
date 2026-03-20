@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mckyle Arjoon — Systems Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #181818;
+    --border: #222222;
+    --border-hover: #333333;
+    --text: #e8e4de;
+    --text-muted: #6b6560;
+    --text-dim: #3a3633;
+    --accent-sentinel: #c8a96e;
+    --accent-moment: #7fb3c8;
+    --accent-glow-sentinel: rgba(200, 169, 110, 0.08);
+    --accent-glow-moment: rgba(127, 179, 200, 0.08);
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-mark {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--border));
+  }
+
+  /* Horizontal rule lines decoration */
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-lines::before {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
+    opacity: 0.3;
+  }
+
+  .hero-left {
+    padding-right: 4rem;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--text-muted);
+  }
+
+  .hero-name {
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+
+  .hero-name span {
+    display: block;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .hero-bio {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 38ch;
+    margin-bottom: 3rem;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 2px;
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 4rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .hero-stat {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-stat:last-child { border-bottom: none; }
+
+  .stat-num {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects {
+    padding: 8rem 3rem;
+    position: relative;
+  }
+
+  .projects-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  /* ─── PROJECT CARD ─── */
+  .project-card {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: start;
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    gap: 3rem;
+    text-decoration: none;
+    transition: background 0.3s;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .project-card.sentinel::before { background: var(--accent-glow-sentinel); }
+  .project-card.moment::before { background: var(--accent-glow-moment); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-card:last-child { border-bottom: 1px solid var(--border); }
+
+  .project-index {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    padding-top: 0.3rem;
+  }
+
+  .project-main {}
+
+  .project-category {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .project-card.sentinel .project-category { color: var(--accent-sentinel); }
+  .project-card.moment .project-category { color: var(--accent-moment); }
+
+  .project-title {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-subtitle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .project-description {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.9;
+    color: var(--text-muted);
+    max-width: 55ch;
+  }
+
+  .project-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-end;
+  }
+
+  .project-status {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+  }
+
+  .status-concept {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .project-link {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: color 0.2s;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .project-card.sentinel .project-link:hover { color: var(--accent-sentinel); border-color: var(--accent-sentinel); }
+  .project-card.moment .project-link:hover { color: var(--accent-moment); border-color: var(--accent-moment); }
+
+  .project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+  }
+
+  .project-card.sentinel .project-tag {
+    background: rgba(200, 169, 110, 0.06);
+    color: var(--accent-sentinel);
+    border: 1px solid rgba(200, 169, 110, 0.2);
+  }
+
+  .project-card.moment .project-tag {
+    background: rgba(127, 179, 200, 0.06);
+    color: var(--accent-moment);
+    border: 1px solid rgba(127, 179, 200, 0.2);
+  }
+
+  /* ─── EXPANDED DETAIL ─── */
+  .project-expand {
+    display: none;
+    grid-column: 1 / -1;
+    padding: 2rem 0 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  .project-expand.open { display: block; }
+
+  .expand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .expand-block {}
+
+  .expand-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .expand-text {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+  }
+
+  .expand-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .expand-list li {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .expand-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-dim);
+  }
+
+  /* ─── ABOUT ─── */
+  #about {
+    padding: 8rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-heading {
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .about-body {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 2;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .about-disciplines {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 2rem;
+    border: 1px solid var(--border);
+  }
+
+  .discipline {
+    padding: 1.5rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .discipline:nth-child(2n) { border-right: none; }
+  .discipline:nth-last-child(-n+2) { border-bottom: none; }
+
+  .discipline-name {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .discipline-desc {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    padding: 6rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .contact-heading {
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .contact-heading span {
+    display: block;
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 0.4em;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+    font-family: var(--mono);
+    text-transform: uppercase;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+  }
+
+  .contact-link {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .contact-link:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left, .footer-right {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-label { animation: fadeUp 0.6s ease 0.1s both; }
+  .hero-name { animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-bio { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-tags { animation: fadeUp 0.6s ease 0.4s both; }
+  .hero-right { animation: fadeUp 0.6s ease 0.5s both; }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; }
+    .hero-left { padding-right: 0; margin-bottom: 3rem; }
+    .hero-right { padding-left: 0; border-left: none; border-top: 1px solid var(--border); padding-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); }
+    .hero-stat { border-bottom: none; padding: 1rem 0; }
+    .project-card { grid-template-columns: 1fr; padding: 2rem 0; gap: 1.5rem; }
+    .project-meta { align-items: flex-start; flex-direction: row; }
+    .expand-grid { grid-template-columns: 1fr; gap: 2rem; }
+    #projects, #about, #contact { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-inner { flex-direction: column; gap: 3rem; align-items: flex-start; }
+    .contact-links { align-items: flex-start; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .about-disciplines { grid-template-columns: 1fr; }
+    .discipline:nth-child(2n) { border-right: none; }
+  }
+
+  /* Click indicator */
+  .click-hint {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .click-hint-arrow {
+    transition: transform 0.3s;
+    display: inline-block;
+  }
+
+  .project-card:hover .click-hint { color: var(--text-muted); }
+  .project-expand.open + .click-hint .click-hint-arrow { transform: rotate(180deg); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-mark">MAA / Portfolio</span>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-lines"></div>
+
+  <div class="hero-left">
+    <div class="hero-label">Systems Architect · Durban, ZA</div>
+    <h1 class="hero-name">
+      <span>Mckyle Aaron</span>
+      Arjoon
+    </h1>
+    <p class="hero-bio">
+      Building distributed intelligence systems at the intersection of urban infrastructure, AI, and real-time data. Focused on problems where the answer hasn't been shipped yet.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Distributed Systems</span>
+      <span class="tag">Edge AI</span>
+      <span class="tag">P2P Networks</span>
+      <span class="tag">Product Strategy</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Ventures in Development</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Scale Ceiling</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-num">ZA</div>
+      <div class="stat-label">Base of Operations</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-label">Selected Work</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- SENTINEL -->
+    <div class="project-card sentinel reveal" onclick="toggleExpand('sentinel-expand', this)">
+      <div class="project-index">01</div>
+
+      <div class="project-main">
+        <div class="project-category">Urban Infrastructure · AI · IoT</div>
+        <h2 class="project-title">Sentinel</h2>
+        <p class="project-subtitle">AI-Driven Peer-to-Peer Traffic Intelligence Network</p>
+        <p class="project-description">
+          A city-scale adaptive traffic management system where every traffic signal operates as an autonomous, intelligent edge node. Nodes communicate peer-to-peer to coordinate green waves, predict congestion, and prioritise emergency vehicles — without central server dependency. The Honeycomb Cell module forms the hardware backbone: a tri-channel embedded unit handling mesh P2P, relay, and cloud uplink simultaneously.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Reinforcement Learning</span>
+          <span class="project-tag">Cyclone DDS</span>
+          <span class="project-tag">Zenoh</span>
+          <span class="project-tag">MQTT</span>
+          <span class="project-tag">Edge Computing</span>
+          <span class="project-tag">ESP32</span>
+          <span class="project-tag">Smart City</span>
+        </div>
+
+        <div class="project-expand" id="sentinel-expand">
+          <div class="expand-grid">
+            <div class="expand-block">
+              <div class="expand-label">Core Architecture</div>
+              <ul class="expand-list">
+                <li>Each traffic light = autonomous edge node running local AI, sensor processing, and P2P communication</li>
+                <li>Three-channel Honeycomb Cell module: mesh P2P, relay/duplication, and server uplink — all simultaneous</li>
+                <li>Cyclone DDS for real-time inter-node coordination; MQTT for cloud telemetry; Zenoh as the bridging data fabric</li>
+                <li>Cloud layer is observer-only — no real-time commands. Intelligence lives at the edge</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <div class="expand-label">Intelligence Layer</div>
+              <ul class="expand-list">
+                <li>Fatigue Index: live sprint counts, distance, recovery windows per player/vehicle</li>
+                <li>Momentum Index: possession %, territory, shot conversion tracking</li>
+                <li>Seasonal adaptation: holiday surges, school-term patterns, event-based load prediction</li>
+                <li>Emergency preemption: signed tokens clear corridor node-by-node without central coordination</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <div class="expand-label">Business Model</div>
+              <ul class="expand-list">
+                <li>Municipal SaaS — R25–70K per intersection/year; hardware retrofit R2.2–4K per node</li>
+                <li>Projected savings: R40–90M per metro/year vs current maintenance + congestion costs</li>
+                <li>B2B data: anonymised traffic analytics sold to logistics, insurers, retail footfall</li>
+                <li>Driver app: free tier (heatmaps, fault alerts) + premium (green-wave routing, AI ETAs)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="click-hint">
+          <span>View Technical Detail</span>
+          <span class="click-hint-arrow">↓</span>
+        </div>
+      </div>
+
+      <div class="project-meta">
+        <span class="project-status status-concept">In Development</span>
+        <a href="sentinel.html" class="project-link" onclick="event.stopPropagation()">
+          Full Case Study →
+        </a>
+      </div>
+    </div>
+
+    <!-- MOMENT MARKETS -->
+    <div class="project-card moment reveal" onclick="toggleExpand('moment-expand', this)">
+      <div class="project-index">02</div>
+
+      <div class="project-main">
+        <div class="project-category">Sports Tech · Betting · Product Design</div>
+        <h2 class="project-title">Moment Markets</h2>
+        <p class="project-subtitle">Real-Time Predictive Overlay Engine for Live Sports Betting</p>
+        <p class="project-description">
+          A contextual micro-betting overlay layer embedded directly into live football streams. When a free kick, penalty, or VAR check triggers — an overlay surfaces instantly inside the stream, offering a one-tap prediction with a 6-second window. No bet slip. No navigation. Converts passive viewership into real-time wagering using existing sportsbook infrastructure. Designed as an additive engagement layer, not a new platform.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">WebRTC</span>
+          <span class="project-tag">Real-Time Odds</span>
+          <span class="project-tag">Low Latency HLS</span>
+          <span class="project-tag">ML Prediction</span>
+          <span class="project-tag">In-Play Betting</span>
+          <span class="project-tag">UX Strategy</span>
+        </div>
+
+        <div class="project-expand" id="moment-expand">
+          <div class="expand-grid">
+            <div class="expand-block">
+              <div class="expand-label">Prediction Engine</div>
+              <ul class="expand-list">
+                <li>Fatigue Index — minutes played, sprint frequency, distance, recovery windows</li>
+                <li>Pressure Index — scoreline tension, match importance, home/away differential, crowd data</li>
+                <li>Environmental factors — wind speed/direction, pitch wetness, temperature</li>
+                <li>Goalkeeper bias metrics — historical dive direction, reaction time, positioning drift</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <div class="expand-label">Technical Stack</div>
+              <ul class="expand-list">
+                <li>Event detection via official live data feeds (Opta, Sportradar, Genius Sports)</li>
+                <li>Overlay delivered via WebRTC / LL-HLS with ≤2–3s latency requirement</li>
+                <li>Client-side JS SDK injection — no stream re-encode required</li>
+                <li>Timestamp-aligned lockout windows prevent arbitrage exploitation</li>
+              </ul>
+            </div>
+            <div class="expand-block">
+              <div class="expand-label">Monetisation Thesis</div>
+              <ul class="expand-list">
+                <li>Targets under-monetised passive viewers — no new user acquisition cost</li>
+                <li>200K viewers × 30% interaction × 5 bets × R10 = R3M incremental turnover per match</li>
+                <li>Pilot-first strategy: 3-month free-credit mode for engagement validation</li>
+                <li>Long-term: personalised overlays, sponsored micro-markets, AI smart predictions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="click-hint">
+          <span>View Technical Detail</span>
+          <span class="click-hint-arrow">↓</span>
+        </div>
+      </div>
+
+      <div class="project-meta">
+        <span class="project-status status-concept">Pitch Ready</span>
+        <a href="moment-markets.html" class="project-link" onclick="event.stopPropagation()">
+          Full Case Study →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-label">Background</span>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="about-grid reveal">
+    <div>
+      <h2 class="about-heading">Thinking in systems.</h2>
+    </div>
+    <div class="about-body">
+      <p>
+        I work at the intersection of architecture and implementation — identifying high-leverage problems in complex systems, then designing the technical and business frameworks to solve them.
+      </p>
+      <p>
+        Both Sentinel and Moment Markets share a thesis: existing infrastructure is underutilised. Traffic lights don't talk to each other. Streaming viewers don't bet. The opportunity isn't in building something new from scratch — it's in adding intelligence to what already exists.
+      </p>
+      <p>
+        Currently pursuing a university collaboration to accelerate both ventures into pilot-stage deployment.
+      </p>
+
+      <div class="about-disciplines">
+        <div class="discipline">
+          <div class="discipline-name">Distributed Systems</div>
+          <div class="discipline-desc">P2P mesh networks, edge computing, consensus protocols, fault-tolerant architecture</div>
+        </div>
+        <div class="discipline">
+          <div class="discipline-name">AI & ML</div>
+          <div class="discipline-desc">Reinforcement learning, predictive modelling, edge inference, real-time optimization</div>
+        </div>
+        <div class="discipline">
+          <div class="discipline-name">Product Strategy</div>
+          <div class="discipline-desc">Go-to-market, revenue modelling, B2G sales cycles, pilot design</div>
+        </div>
+        <div class="discipline">
+          <div class="discipline-name">Embedded Systems</div>
+          <div class="discipline-desc">ESP32, ARM Cortex, FreeRTOS, IoT hardware architecture, PCB design</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner reveal">
+    <h2 class="contact-heading">
+      <span>Get in touch</span>
+      Let's build.
+    </h2>
+    <div class="contact-links">
+      <a href="mailto:mckylearjoon20@gmail.com" class="contact-link">mckylearjoon20@gmail.com</a>
+      <a href="https://linkedin.com/in/mckyle-aaron-arjoon" class="contact-link" target="_blank">LinkedIn</a>
+      <a href="https://github.com/mckyle-arjoon" class="contact-link" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-left">© 2026 Mckyle Arjoon</span>
+  <span class="footer-right">Durban · South Africa</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Expand/collapse
+  function toggleExpand(id, card) {
+    const expand = document.getElementById(id);
+    const hint = card.querySelector('.click-hint');
+    const arrow = card.querySelector('.click-hint-arrow');
+    const isOpen = expand.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.project-expand').forEach(e => e.classList.remove('open'));
+    document.querySelectorAll('.click-hint-arrow').forEach(a => a.style.transform = '');
+    document.querySelectorAll('.click-hint').forEach(h => h.querySelector('span:first-child').textContent = 'View Technical Detail');
+
+    if (!isOpen) {
+      expand.classList.add('open');
+      arrow.style.transform = 'rotate(180deg)';
+      hint.querySelector('span:first-child').textContent = 'Collapse';
+    }
+  }
+</script>
+</body>
+</html>

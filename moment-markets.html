@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moment Markets — Stakeholder Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00FF87;
+    --green-dim: #00cc6a;
+    --dark: #080c0a;
+    --dark2: #0d1410;
+    --dark3: #131a15;
+    --dark4: #1a231c;
+    --mid: #2a3d2e;
+    --text: #e8f0e9;
+    --text-dim: #8a9e8c;
+    --text-muted: #4a5e4d;
+    --accent: #FFD166;
+    --red: #FF6B6B;
+    --white: #f5faf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,12,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--green);
+  }
+
+  .nav-logo span { color: var(--text-dim); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--green); }
+
+  /* ─── SECTIONS ─── */
+  section {
+    padding: 100px 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  .container-narrow {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 60% 50%, rgba(0,255,135,0.04) 0%, transparent 70%),
+      var(--dark);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,135,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,135,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 60% 50%, black 0%, transparent 70%);
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 48px;
+    padding-top: 120px;
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 120px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  h1 .green { color: var(--green); }
+
+  .hero-sub {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    color: var(--text-dim);
+    max-width: 680px;
+    margin-top: 28px;
+    margin-bottom: 56px;
+    line-height: 1.5;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 56px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--green);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--text-muted);
+    animation: scrollline 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollline {
+    0%, 100% { width: 40px; opacity: 0.4; }
+    50% { width: 60px; opacity: 1; }
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .lead {
+    font-size: 18px;
+    color: var(--text-dim);
+    font-weight: 300;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    max-width: 700px;
+  }
+
+  p {
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mid), transparent);
+    margin: 0;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--dark3);
+    border: 1px solid var(--mid);
+    border-radius: 4px;
+    padding: 36px;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), transparent);
+    border-radius: 4px 4px 0 0;
+  }
+
+  .card-accent::before {
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .card-red::before {
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  /* ─── OVERVIEW / ALTERNATE SECTIONS ─── */
+  #overview { background: var(--dark2); }
+  #how-it-works { background: var(--dark); }
+  #intelligence { background: var(--dark2); }
+  #technical { background: var(--dark); }
+  #financial { background: var(--dark2); }
+  #feasibility { background: var(--dark); }
+  #roadmap { background: var(--dark2); }
+  #closing { background: var(--dark); }
+
+  /* ─── STEPS ─── */
+  .step-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .step-row:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--green);
+    opacity: 0.25;
+    line-height: 1;
+    min-width: 64px;
+  }
+
+  .step-content h3 { margin-bottom: 8px; font-size: 22px; }
+
+  /* ─── TABLE ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 32px;
+    font-size: 14px;
+  }
+
+  .data-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .data-table td {
+    padding: 16px 20px;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(42,61,46,0.4);
+    vertical-align: top;
+  }
+
+  .data-table tr:hover td { background: rgba(0,255,135,0.02); }
+
+  .data-table .highlight { color: var(--green); font-family: 'DM Mono', monospace; }
+  .data-table .warn { color: var(--accent); }
+  .data-table .danger { color: var(--red); }
+
+  /* ─── FINANCIAL BREAKDOWN ─── */
+  .fin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(42,61,46,0.5);
+  }
+
+  .fin-row:last-child { border-bottom: none; }
+
+  .fin-label { color: var(--text-dim); font-size: 15px; }
+  .fin-value { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--green); }
+  .fin-value.warn { color: var(--accent); }
+  .fin-value.total { font-size: 22px; color: var(--white); }
+
+  .fin-block {
+    background: var(--dark3);
+    border: 1px solid var(--mid);
+    border-radius: 4px;
+    padding: 32px 36px;
+  }
+
+  .fin-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--mid);
+  }
+
+  .fin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  /* ─── BIG NUMBER ─── */
+  .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--green);
+  }
+
+  .big-number-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+  }
+
+  /* ─── TAGS ─── */
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+
+  .tag-green { background: rgba(0,255,135,0.08); color: var(--green); border: 1px solid rgba(0,255,135,0.2); }
+  .tag-yellow { background: rgba(255,209,102,0.08); color: var(--accent); border: 1px solid rgba(255,209,102,0.2); }
+  .tag-red { background: rgba(255,107,107,0.08); color: var(--red); border: 1px solid rgba(255,107,107,0.2); }
+
+  /* ─── ROADMAP TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-top: 48px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--mid);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px rgba(0,255,135,0.4);
+  }
+
+  .tl-phase {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .tl-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  /* ─── QUOTE ─── */
+  .pull-quote {
+    border-left: 3px solid var(--green);
+    padding: 20px 32px;
+    margin: 40px 0;
+    background: rgba(0,255,135,0.03);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .pull-quote p {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--dark2);
+    border-top: 1px solid var(--mid);
+    padding: 48px;
+    text-align: center;
+  }
+
+  footer .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--green);
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  .confidential {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    border: 1px solid var(--mid);
+    padding: 4px 12px;
+    margin-top: 16px;
+  }
+
+  /* ─── INLINE HIGHLIGHT ─── */
+  strong { color: var(--text); font-weight: 500; }
+  em { color: var(--green); font-style: normal; }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MOMENT<span>MARKETS</span></div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#intelligence">Intelligence</a></li>
+    <li><a href="#technical">Technical</a></li>
+    <li><a href="#financial">Financial</a></li>
+    <li><a href="#feasibility">Feasibility</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-label">Stakeholder Overview — Confidential</div>
+    <h1>MOMENT<br><span class="green">MARKETS™</span></h1>
+    <p class="hero-sub">A real-time predictive overlay engine that converts passive sports viewers into active bettors — inside the stream, in under six seconds.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">5→1</div>
+        <div class="hero-stat-label">Steps reduced in the betting flow</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">R3M+</div>
+        <div class="hero-stat-label">Projected turnover per high-viewership match</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">New infrastructure required from the operator</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll to explore</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">The Concept</div>
+      <h2>WHAT IS<br>MOMENT MARKETS?</h2>
+      <p class="lead">Moment Markets is a real-time engagement layer that sits on top of existing live sports streams. It detects high-impact moments during a match — a penalty, a free kick, a VAR review — and presents a targeted prediction directly on-screen, which a viewer can act on with a single tap, in under six seconds.</p>
+    </div>
+
+    <div class="pull-quote fade-in">
+      <p>Most people watching a live match on a betting platform never place an in-play bet. Not because they don't want to — but because by the time they find the market and confirm the bet, the moment has passed. Moment Markets removes every step between the impulse and the action.</p>
+    </div>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <h3>The Problem</h3>
+        <p>Current in-play betting requires users to leave the stream, navigate market lists, build a bet slip, and confirm. This five-step process kills the impulse that live sport generates. Most live stream viewers are passive. They watch but never bet.</p>
+      </div>
+      <div class="card card-accent">
+        <h3>The Opportunity</h3>
+        <p>Betway already has the stream, the wallet, the user base, and the gambling licence. The infrastructure is in place. What is missing is a mechanism to activate the viewing audience at the exact emotional peak of a match — the moment the free kick is awarded, not after.</p>
+      </div>
+      <div class="card">
+        <h3>The Solution</h3>
+        <p>A lightweight overlay appears at key match events. It asks one question. It gives the viewer six to ten seconds to respond. One tap. Settled automatically. No navigation, no bet slip, no friction. The viewer never leaves the stream.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Strategic Position</div>
+      <h2>WHERE THIS SITS IN<br>THE MARKET</h2>
+      <p class="lead">This is not a new sportsbook. It is not a streaming platform. It is an engagement and yield multiplier built on top of infrastructure that already exists.</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Platform Type</th>
+            <th>Streaming</th>
+            <th>Wallet</th>
+            <th>In-Play Markets</th>
+            <th>Contextual Overlay</th>
+            <th>Impulse Capture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Traditional Sportsbook</td>
+            <td class="highlight">✓</td>
+            <td class="highlight">✓</td>
+            <td class="highlight">✓</td>
+            <td class="danger">✗</td>
+            <td class="danger">✗</td>
+          </tr>
+          <tr>
+            <td>BetVision (Genius Sports)</td>
+            <td class="highlight">✓</td>
+            <td class="highlight">✓</td>
+            <td class="highlight">✓</td>
+            <td class="warn">Partial</td>
+            <td class="danger">✗</td>
+          </tr>
+          <tr>
+            <td style="color: var(--green); font-weight: 500;">Moment Markets™ Layer</td>
+            <td class="warn">Uses existing</td>
+            <td class="warn">Uses existing</td>
+            <td class="warn">Uses existing</td>
+            <td class="highlight">✓ Full</td>
+            <td class="highlight">✓ Core feature</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Product Experience</div>
+      <h2>HOW IT WORKS<br>IN PRACTICE</h2>
+      <p class="lead">The experience is designed to feel like a natural part of watching the match — not an interruption. Every design decision is made to reduce friction to as close to zero as possible.</p>
+    </div>
+
+    <div class="fade-in" style="margin-top: 8px;">
+      <div class="step-row">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>The Viewer Watches Live</h3>
+          <p>A user opens the Betway app and begins watching a live Premier League match. They are engaged with the stream but have not interacted with any betting market. This is the majority of live stream users — spectators, not bettors. Under the current model, they generate no revenue during the match.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>A Key Moment Is Detected</h3>
+          <p>A foul is committed on the edge of the box. The referee signals a free kick. Within milliseconds, the system's event detection engine receives a signal from the live match data feed — the same data feed Betway already subscribes to. The system identifies this as a high-value predictive moment.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>The Overlay Appears</h3>
+          <p>A semi-transparent overlay slides in at the bottom of the screen. It presents a single question — for example, "Bruno Fernandes: will he score this free kick?" — alongside two clearly labelled options and their respective odds. A countdown timer is visible. The overlay is designed to feel native to the stream, not like an advertisement.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>One Tap to Predict</h3>
+          <p>The user selects their prediction with a single tap before the timer expires. The stake is drawn instantly from their existing Betway wallet. No confirmation screen. No bet slip. No secondary action required. The overlay disappears immediately after selection.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h3>Instant Settlement</h3>
+          <p>The free kick is taken. The outcome — goal or no goal — is confirmed by the data feed. The user receives a brief visual result notification on-screen. Winnings are credited to their wallet in real time. The stream continues uninterrupted. The entire cycle from overlay appearance to settlement lasts under thirty seconds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Trigger Events</div>
+      <h2>WHEN THE OVERLAY<br>APPEARS</h2>
+      <p class="lead">The system does not activate on every event — only on moments with meaningful predictive value and strong emotional engagement from viewers. Frequency is deliberately limited to preserve the impact of each overlay.</p>
+      <div class="card-grid-3" style="margin-top: 32px;">
+        <div class="card">
+          <div class="tag tag-green">High Priority</div>
+          <h3 style="margin-top: 16px;">Penalty Kick</h3>
+          <p>Binary outcome. High emotional stakes. Clear taker identified. Strong data history per player and goalkeeper combination.</p>
+        </div>
+        <div class="card">
+          <div class="tag tag-green">High Priority</div>
+          <h3 style="margin-top: 16px;">Direct Free Kick</h3>
+          <p>Positional context available. Shot-on-target and scoring probability calculable from distance, angle, and player history.</p>
+        </div>
+        <div class="card">
+          <div class="tag tag-yellow">Medium Priority</div>
+          <h3 style="margin-top: 16px;">VAR Review</h3>
+          <p>Extended pause in play. High viewer attention. Binary outcome — will the decision be overturned or upheld.</p>
+        </div>
+        <div class="card">
+          <div class="tag tag-yellow">Medium Priority</div>
+          <h3 style="margin-top: 16px;">Corner Kick</h3>
+          <p>Will the corner result in a shot? In a goal? Probability calculable from team set-piece data and defensive positioning.</p>
+        </div>
+        <div class="card">
+          <div class="tag tag-yellow">Medium Priority</div>
+          <h3 style="margin-top: 16px;">Tactical Substitution</h3>
+          <p>Will the substitute score or assist? Lightweight market with high fan interest, particularly for marquee substitutions.</p>
+        </div>
+        <div class="card">
+          <div class="tag tag-red">Controlled</div>
+          <h3 style="margin-top: 16px;">Injury Time</h3>
+          <p>Will there be a late goal? Volatile but high-engagement moment. Limited to late-game scenarios where the scoreline creates genuine tension.</p>
+        </div>
+      </div>
+      <p style="margin-top: 24px; font-size: 14px; color: var(--text-muted);">Maximum recommended frequency: 6 to 10 overlays per 90-minute match. Below this threshold, each overlay feels significant rather than routine.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INTELLIGENCE ENGINE -->
+<section id="intelligence">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Odds Intelligence</div>
+      <h2>WHAT POWERS<br>THE PREDICTIONS</h2>
+      <p class="lead">The odds displayed in each overlay are not static figures taken from a standard market. They are dynamically calculated in real time using a multi-variable intelligence model. This is the core proprietary component of the system — and the primary point of differentiation from anything currently available in the market.</p>
+    </div>
+
+    <p class="fade-in" style="margin-bottom: 48px;">Standard sportsbook odds for in-play events are updated periodically and reflect broad statistical averages. The Moment Markets model recalculates continuously, incorporating conditions that are specific to the current moment in the match — not just historical averages.</p>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div class="tag tag-green">Variable 01</div>
+        <h3 style="margin-top: 16px;">In-Match Fatigue Index</h3>
+        <p>Every outfield player accumulates a live fatigue score throughout the match. This is calculated from minutes played, total distance covered, sprint frequency in the preceding five minutes, and recovery time between high-intensity efforts. A player taking a free kick in the 84th minute after a physically demanding game has meaningfully different execution probability than the same player in the 22nd minute.</p>
+        <p style="margin-bottom: 0;">Fatigue does not mean a player becomes bad. It means their precision and power output degrade in measurable, predictable ways.</p>
+      </div>
+      <div class="card">
+        <div class="tag tag-green">Variable 02</div>
+        <h3 style="margin-top: 16px;">Psychological Pressure Index</h3>
+        <p>Some players perform statistically better under pressure. Others do not. The pressure index incorporates the current scoreline, match importance (league position implications, knockout stage, derby), home or away status, crowd noise intensity where available, and the player's performance record in comparable high-pressure moments.</p>
+        <p style="margin-bottom: 0;">This variable is deliberately underweighted in standard market pricing, creating a genuine informational edge.</p>
+      </div>
+      <div class="card card-accent">
+        <div class="tag tag-yellow">Variable 03</div>
+        <h3 style="margin-top: 16px;">Goalkeeper Bias Metrics</h3>
+        <p>For penalties and direct free kicks, the defending goalkeeper is as important a variable as the taker. The model incorporates historical dive direction tendencies, reaction time data, positioning drift under pressure, and performance record in specific scenario types. Some goalkeepers show strong left-bias when diving; others show inconsistency that can be modelled.</p>
+      </div>
+      <div class="card card-accent">
+        <div class="tag tag-yellow">Variable 04</div>
+        <h3 style="margin-top: 16px;">Match Momentum Index</h3>
+        <p>Football is a sport defined by streaks and momentum. The momentum index measures possession percentage in the preceding ten minutes, territory control, recent shot conversion, and the flow of referee decisions. A team that has been dominant for twenty minutes and just won a free kick is in a meaningfully different position than one that has been under sustained defensive pressure.</p>
+      </div>
+      <div class="card">
+        <div class="tag tag-green">Variable 05</div>
+        <h3 style="margin-top: 16px;">Environmental Conditions</h3>
+        <p>Wind speed and direction, pitch wetness, ambient temperature, and stadium altitude all have documented effects on ball trajectory, player performance, and shot accuracy. These variables are incorporated from live weather feeds and are particularly relevant for free kicks, where trajectory prediction is central to the outcome.</p>
+        <p style="margin-bottom: 0;">Most betting operators ignore environmental data entirely. Its inclusion is a meaningful differentiator.</p>
+      </div>
+      <div class="card">
+        <div class="tag tag-green">Variable 06</div>
+        <h3 style="margin-top: 16px;">Defensive Disruption Score</h3>
+        <p>For set pieces, the defending wall's consistency matters. The model incorporates jump timing inconsistency in the wall, recent fouls conceded near the box, and the goalkeeper's communication patterns with defenders. A poorly organised wall with a goalkeeper who has shown positional inconsistency changes the probability calculation significantly.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in" style="margin-top: 64px;">
+      <p>Standard sportsbooks use historical averages. Moment Markets uses the present. That gap — between what a player has done on average and what they are likely to do right now, at this moment, under these conditions — is where the intelligence lives.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TECHNICAL -->
+<section id="technical">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Technical Architecture</div>
+      <h2>HOW THE SYSTEM<br>IS BUILT</h2>
+      <p class="lead">The following is a high-level description of the system architecture, written for a non-technical audience. Detailed engineering specifications are available in the supplementary technical annex upon request.</p>
+    </div>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px;">COMPONENT A</div>
+        <h3>Event Detection Engine</h3>
+        <p>This component listens in real time to the official match data feed — the same feed used by Betway and every major sportsbook — and identifies when a trigger event has occurred. It converts the raw data signal into an internal command to activate the overlay system.</p>
+        <p style="margin-bottom: 0;">Data providers: Opta, Sportradar, Genius Sports. All are existing Betway suppliers.</p>
+      </div>
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px;">COMPONENT B</div>
+        <h3>Prediction Engine</h3>
+        <p>Upon event detection, the prediction engine calculates a real-time probability for each possible outcome. It ingests live player data, environmental feeds, and match context, and applies the multi-variable intelligence model described above. Output is a set of odds displayed in the overlay.</p>
+        <p style="margin-bottom: 0;">Model type: gradient boosting with real-time Bayesian updating.</p>
+      </div>
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px;">COMPONENT C</div>
+        <h3>Latency Synchronisation Layer</h3>
+        <p>This is the most technically critical component. Live streams typically run with a five to fifteen second delay from real-world events. The overlay must appear before the event executes on the viewer's screen, and bets must lock before the outcome is visible. The synchronisation layer calibrates the overlay trigger timing against the viewer's specific stream delay.</p>
+        <p style="margin-bottom: 0;">A two-second safety buffer is applied before outcome resolution.</p>
+      </div>
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px;">COMPONENT D</div>
+        <h3>Overlay Delivery System</h3>
+        <p>A lightweight software layer injected into the streaming client — the Betway mobile app or web player — that renders the overlay interface at the correct moment. It is designed to be visually unobtrusive, dismissible, and fast-rendering on low-bandwidth connections. The interface is rendered client-side to minimise delivery latency.</p>
+      </div>
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: 2px; margin-bottom: 16px;">COMPONENT E</div>
+        <h3>Wallet Integration</h3>
+        <p>Bet placement and settlement connect directly to Betway's existing wallet infrastructure via API. No new payment system is required. The overlay system creates a micro-market, places the bet on the user's behalf upon tap confirmation, and triggers settlement when the outcome is confirmed by the data feed. The entire financial flow operates within Betway's existing licensed environment.</p>
+      </div>
+      <div class="card">
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 2px; margin-bottom: 16px;">ANTI-EXPLOITATION</div>
+        <h3>Lockout and Safety Mechanisms</h3>
+        <p>The system applies a hard bet lockout window in the final moments before the event executes — preventing any user from placing a bet once they can see the outcome on their screen. An anti-arbitrage timing lock prevents systematic exploitation of stream delay differences. These mechanisms are built into the latency synchronisation layer.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Integration Requirements</div>
+      <h2>WHAT BETWAY<br>ALREADY HAS</h2>
+      <p class="lead">A critical aspect of this concept is that the majority of what is required already exists within Betway's current infrastructure. The integration surface is deliberately narrow.</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Requirement</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Live streaming infrastructure</td>
+            <td class="highlight">Already exists</td>
+            <td>Betway currently streams Premier League and other matches</td>
+          </tr>
+          <tr>
+            <td>Sports data feed subscription</td>
+            <td class="highlight">Already exists</td>
+            <td>Opta / Sportradar already integrated for in-play markets</td>
+          </tr>
+          <tr>
+            <td>User wallet system</td>
+            <td class="highlight">Already exists</td>
+            <td>API connection required for micro-market settlement</td>
+          </tr>
+          <tr>
+            <td>Gambling licence (SA)</td>
+            <td class="highlight">Already exists</td>
+            <td>No new licence category required for overlay markets</td>
+          </tr>
+          <tr>
+            <td>Mobile and web client</td>
+            <td class="highlight">Already exists</td>
+            <td>Overlay SDK injected into existing apps</td>
+          </tr>
+          <tr>
+            <td>Prediction engine</td>
+            <td class="warn">To be built</td>
+            <td>Core new development — the intelligence layer</td>
+          </tr>
+          <tr>
+            <td>Latency sync layer</td>
+            <td class="warn">To be built</td>
+            <td>Critical new component requiring engineering resource</td>
+          </tr>
+          <tr>
+            <td>Overlay UI SDK</td>
+            <td class="warn">To be built</td>
+            <td>Client-side injection module for stream overlay</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FINANCIAL -->
+<section id="financial">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Financial Analysis</div>
+      <h2>THE NUMBERS<br>IN DETAIL</h2>
+      <p class="lead">The financial model below is illustrative and based on conservative assumptions for the South African market. All figures are estimates intended to demonstrate the revenue potential framework. Actual results would depend on Betway's specific user base, average stakes, and pilot execution.</p>
+    </div>
+
+    <div class="fin-grid fade-in">
+      <div class="fin-block">
+        <div class="fin-title">Revenue Model — Per Match (Conservative)</div>
+        <div class="fin-row">
+          <span class="fin-label">Concurrent live stream viewers</span>
+          <span class="fin-value">150,000</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Overlay interaction rate</span>
+          <span class="fin-value">20%</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Engaged users</span>
+          <span class="fin-value">30,000</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Overlays per match</span>
+          <span class="fin-value">8</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Average stake per micro-bet</span>
+          <span class="fin-value warn">R10</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label" style="color: var(--text); font-weight: 500;">Gross turnover per match</span>
+          <span class="fin-value total">R2.4M</span>
+        </div>
+        <div class="fin-row" style="border: none;">
+          <span class="fin-label">Operator margin (est. 8%)</span>
+          <span class="fin-value">R192,000</span>
+        </div>
+      </div>
+
+      <div class="fin-block">
+        <div class="fin-title">Revenue Model — Per Match (Moderate)</div>
+        <div class="fin-row">
+          <span class="fin-label">Concurrent live stream viewers</span>
+          <span class="fin-value">200,000</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Overlay interaction rate</span>
+          <span class="fin-value">30%</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Engaged users</span>
+          <span class="fin-value">60,000</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Overlays per match</span>
+          <span class="fin-value">8</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Average stake per micro-bet</span>
+          <span class="fin-value warn">R20</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label" style="color: var(--text); font-weight: 500;">Gross turnover per match</span>
+          <span class="fin-value total">R9.6M</span>
+        </div>
+        <div class="fin-row" style="border: none;">
+          <span class="fin-label">Operator margin (est. 8%)</span>
+          <span class="fin-value">R768,000</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;" class="fade-in">
+      <div class="card">
+        <h3>Annual Revenue Projection — South African Market</h3>
+        <p>The Premier League season runs approximately 38 match weeks. Assuming Betway streams a proportion of these matches and applies overlays selectively to high-viewership fixtures:</p>
+        <table class="data-table" style="margin-top: 24px;">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Matches with Overlays</th>
+              <th>Turnover Per Match</th>
+              <th>Annual Gross Turnover</th>
+              <th>Annual Operator Margin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Conservative</td>
+              <td>40</td>
+              <td class="highlight">R2.4M</td>
+              <td class="highlight">R96M</td>
+              <td class="highlight">R7.7M</td>
+            </tr>
+            <tr>
+              <td>Moderate</td>
+              <td>80</td>
+              <td class="highlight">R6M</td>
+              <td class="highlight">R480M</td>
+              <td class="highlight">R38.4M</td>
+            </tr>
+            <tr>
+              <td>Optimistic</td>
+              <td>150</td>
+              <td class="highlight">R9.6M</td>
+              <td class="highlight">R1.44B</td>
+              <td class="highlight">R115M</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">These projections reflect overlay-driven activity only, separate from any impact on standard in-play market volume. Margin rate will vary by event type and market construction.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px;" class="fade-in">
+      <div class="fin-block">
+        <div class="fin-title">Estimated Development Cost — 90-Day Pilot</div>
+        <div class="fin-row">
+          <span class="fin-label">Prediction engine development (ML model + data pipeline)</span>
+          <span class="fin-value warn">R800K – R1.4M</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Latency synchronisation layer</span>
+          <span class="fin-value warn">R400K – R700K</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Overlay UI SDK (iOS, Android, Web)</span>
+          <span class="fin-value warn">R300K – R600K</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">Wallet API integration and micro-market settlement</span>
+          <span class="fin-value warn">R200K – R400K</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label">QA, compliance review, and pilot operations</span>
+          <span class="fin-value warn">R200K – R400K</span>
+        </div>
+        <div class="fin-row">
+          <span class="fin-label" style="color: var(--text); font-weight: 500;">Total estimated pilot build cost</span>
+          <span class="fin-value total">R1.9M – R3.5M</span>
+        </div>
+      </div>
+      <p style="margin-top: 16px; font-size: 13px; color: var(--text-muted);">At conservative revenue projections, pilot costs are recoverable within the first season of full deployment. For an operator of Betway's scale, development cost is well within standard product investment thresholds.</p>
+    </div>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Secondary Revenue</div>
+      <h2>BEYOND THE<br>MICRO-BET</h2>
+      <p class="lead">Direct betting turnover is the primary revenue driver, but the overlay system creates additional monetisation pathways that compound its value over time.</p>
+      <div class="card-grid-3">
+        <div class="card">
+          <h3>Sponsored Overlays</h3>
+          <p>Brand sponsors — particularly in automotive, FMCG, and financial services — can co-brand high-profile overlay moments. "This free kick is brought to you by…" creates a premium, high-attention advertising inventory that does not exist on any current platform. Priced per activation, not per impression.</p>
+        </div>
+        <div class="card card-accent">
+          <h3>Premium Analytics Tier</h3>
+          <p>A visible data layer accompanying the overlay — showing the fatigue index, momentum index, and historical tendencies — can be unlocked as a premium subscription add-on. Sports bettors who value data will pay for visibility into the model powering their decisions.</p>
+        </div>
+        <div class="card">
+          <h3>Data Licensing</h3>
+          <p>The intelligence engine generates a proprietary dataset: real-time player performance metrics tied to betting outcomes, at scale. This dataset has value beyond the SA market and can be licensed to other operators, broadcasters, or sports analytics firms in subsequent phases.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEASIBILITY -->
+<section id="feasibility">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Honest Assessment</div>
+      <h2>FEASIBILITY<br>ANALYSIS</h2>
+      <p class="lead">A balanced and transparent assessment of each dimension — technical, commercial, regulatory, and competitive — with identified risks and mitigation strategies.</p>
+    </div>
+
+    <table class="data-table fade-in">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Rating</th>
+          <th>Summary</th>
+          <th>Key Risk</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Technical</strong></td>
+          <td class="highlight">High</td>
+          <td>Overlay technology is solved. Latency synchronisation is the critical challenge but is well within the capability of Betway's engineering team.</td>
+          <td class="warn">Stream delay exploitation</td>
+          <td>Timestamp sync + hard lockout buffer</td>
+        </tr>
+        <tr>
+          <td><strong>Commercial</strong></td>
+          <td class="highlight">High</td>
+          <td>Incremental yield from existing infrastructure with no user acquisition cost. Business case is strong and directly measurable via A/B testing in pilot.</td>
+          <td class="warn">Cannibalisation of standard markets</td>
+          <td>Overlay targets non-bettors; additive not substitutive</td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory</strong></td>
+          <td class="warn">Medium</td>
+          <td>Ultra-short settlement markets sit in a regulatory grey zone in SA. The provincial gambling board's position on five-to-twenty second markets is not yet established.</td>
+          <td class="danger">Regulatory challenge to micro-bet model</td>
+          <td>Begin pilot in free-credit mode; build case for real-money approval</td>
+        </tr>
+        <tr>
+          <td><strong>Competitive</strong></td>
+          <td class="warn">Medium</td>
+          <td>BetVision (Genius Sports) offers adjacent functionality globally. Betway's data feed relationship with Genius means they may already be in discussion about this product category.</td>
+          <td class="danger">Feature shipped by incumbent data vendor</td>
+          <td>Proprietary intelligence layer is the differentiator — not the overlay itself</td>
+        </tr>
+        <tr>
+          <td><strong>Product</strong></td>
+          <td class="highlight">High</td>
+          <td>Psychology of time-pressured, low-friction micro-decisions is well-supported by behavioural economics research. The product pattern is proven in adjacent contexts.</td>
+          <td class="warn">Overlay fatigue from overuse</td>
+          <td>Maximum 6–10 overlays per match; event selection algorithm required</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Responsible Gambling</div>
+      <h2>SAFEGUARDS AND<br>ETHICAL DESIGN</h2>
+      <p class="lead">The design of this system incorporates responsible gambling principles from the ground up, not as an afterthought. These are not just ethical considerations — they are regulatory requirements and commercial necessities.</p>
+      <div class="card-grid fade-in">
+        <div class="card">
+          <h3>Frequency Caps</h3>
+          <p>Individual users can be limited in the number of overlay interactions per match or per session. Frequency limits prevent the system from becoming a high-speed gambling loop and protect the product from regulatory challenge on harm grounds.</p>
+        </div>
+        <div class="card card-red">
+          <h3>Spend Limits</h3>
+          <p>Micro-bet stake sizes are capped per overlay event. The psychological framing of small, fast bets requires strong default limits to prevent cumulative spend exceeding what a user would consciously authorise in a single bet.</p>
+        </div>
+        <div class="card">
+          <h3>Clear Opt-Out</h3>
+          <p>Every overlay is dismissible with a single swipe. Users can disable the overlay feature entirely in settings. The experience must never feel forced or inescapable. Opt-out visibility is a regulatory expectation and a UX necessity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <div class="fade-in">
+      <div class="section-label">Implementation</div>
+      <h2>PROPOSED<br>ROLLOUT PLAN</h2>
+      <p class="lead">A phased implementation reduces risk, creates measurable proof points at each stage, and allows the system to be refined before full commercial deployment.</p>
+    </div>
+
+    <div class="timeline fade-in">
+      <div class="tl-item">
+        <div class="tl-phase">Phase 01 — Months 1 to 2</div>
+        <div class="tl-title">Feasibility and Architecture</div>
+        <p>Technical feasibility confirmed through latency benchmarking on Betway's existing stream infrastructure. Data feed integration scoped with the existing Opta or Sportradar provider. Initial prediction model built and tested against historical match data. UX prototype designed and user-tested internally. Regulatory pre-consultation with relevant provincial gambling board initiated.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 02 — Months 3 to 5</div>
+        <div class="tl-title">Pilot — Free Credit Mode</div>
+        <p>Live pilot launched on a selection of Premier League matches, restricted to free-credit engagement. Real money is not wagered. The pilot measures overlay interaction rate, session duration change, user sentiment, and technical performance under live conditions. A/B test against control group of equivalent stream viewers who do not receive overlays. All technical failure modes stress-tested in real conditions.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 03 — Months 6 to 8</div>
+        <div class="tl-title">Real-Money Activation</div>
+        <p>Subject to regulatory sign-off and pilot performance data, real-money micro-bet activation is introduced. Initially limited to low stake caps. Performance data from Phase 02 is used to optimise event selection logic, overlay frequency, and odds model accuracy. Revenue reporting framework established for ongoing commercial monitoring.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 04 — Month 9 onwards</div>
+        <div class="tl-title">Full Deployment and Expansion</div>
+        <p>Full rollout across all streamed Premier League matches. Expansion to additional leagues — Champions League, local PSL fixtures, other sports including cricket and rugby as applicable. Sponsored overlay programme launched. Premium analytics tier introduced. Personalisation layer built to refine which overlays are presented to which users based on betting history and engagement patterns.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 64px;" class="fade-in">
+      <div class="section-label">Success Metrics</div>
+      <h2>HOW WE MEASURE<br>PERFORMANCE</h2>
+      <div class="card-grid-3">
+        <div class="card">
+          <div class="big-number">+15%</div>
+          <div class="big-number-label">Target in-play revenue uplift during pilot matches</div>
+        </div>
+        <div class="card card-accent">
+          <div class="big-number" style="color: var(--accent);">20%+</div>
+          <div class="big-number-label">Target overlay interaction rate among live stream viewers</div>
+        </div>
+        <div class="card">
+          <div class="big-number">+8 min</div>
+          <div class="big-number-label">Target increase in average session duration per viewer</div>
+        </div>
+        <div class="card">
+          <div class="big-number">3:1</div>
+          <div class="big-number-label">Minimum target ROI on pilot development cost within 12 months of full deployment</div>
+        </div>
+        <div class="card card-accent">
+          <div class="big-number" style="color: var(--accent);">35%</div>
+          <div class="big-number-label">Target conversion rate from stream-only viewers to active bettors within 3 matches</div>
+        </div>
+        <div class="card">
+          <div class="big-number">≤2s</div>
+          <div class="big-number-label">Maximum acceptable latency delta between overlay trigger and event execution on stream</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CLOSING -->
+<section id="closing">
+  <div class="container-narrow">
+    <div class="fade-in" style="text-align: center; margin-bottom: 64px;">
+      <div class="section-label" style="justify-content: center;">The Strategic Opportunity</div>
+      <h2 style="font-size: clamp(48px, 6vw, 80px);">THE WINDOW<br>IS OPEN</h2>
+    </div>
+    <div class="fade-in">
+      <p>The convergence of live sports streaming and in-play betting is not a new observation. What remains unsolved, globally, is the last-mile problem: connecting the peak emotional moment of a live match to a betting action without interrupting the experience.</p>
+      <p>Betway is positioned to solve this first in the South African market. The infrastructure exists. The user base exists. The data feeds exist. The licence exists. What is required is the intelligence layer and the overlay system — a development investment that, at conservative projections, recovers its cost within a single Premier League season.</p>
+      <p>The competitive risk is real. Genius Sports, through BetVision, is moving in this direction globally. The question is not whether this product will exist in the market — it will. The question is whether Betway builds it, or whether it is delivered to them by a third-party vendor on the vendor's terms.</p>
+
+      <div class="pull-quote" style="margin-top: 48px;">
+        <p>This is not a feature. It is an engagement infrastructure that compounds in value the longer it operates — building proprietary data, user behavioural profiles, and a product experience that no competitor can replicate without building from scratch.</p>
+      </div>
+
+      <div class="card" style="margin-top: 48px; text-align: center; padding: 48px;">
+        <div class="section-label" style="justify-content: center; margin-bottom: 24px;">Proposed Next Step</div>
+        <h3 style="font-size: 32px; margin-bottom: 16px;">A 90-Day Pilot</h3>
+        <p style="max-width: 540px; margin: 0 auto; margin-bottom: 24px;">A controlled pilot in free-credit mode, covering selected high-viewership Premier League fixtures, with full A/B testing against a control group and clear KPIs agreed in advance. Low risk. Measurable. Reversible.</p>
+        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: var(--green); letter-spacing: 1px;">Estimated cost: R1.9M – R3.5M — Recoverable within first full-deployment season</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">MOMENT MARKETS™</div>
+  <p>Real-Time Predictive Overlay Engine for Live Sports Betting</p>
+  <p style="margin-top: 8px;">Concept origination and strategic development — 2025</p>
+  <div class="confidential">CONFIDENTIAL — FOR STAKEHOLDER REVIEW ONLY</div>
+</footer>
+
+<script>
+  // Intersection observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

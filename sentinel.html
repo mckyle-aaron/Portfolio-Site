@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — Intelligent Traffic Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --amber: #e8a020;
+    --amber-dim: #b07010;
+    --amber-pale: #fdf3dc;
+    --teal: #1a8a6e;
+    --teal-pale: #e0f4ef;
+    --gray-100: #f0ede6;
+    --gray-200: #dbd8d0;
+    --gray-400: #9a9890;
+    --gray-600: #5a5850;
+    --body: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(245,243,238,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 48px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--display);
+    font-weight: 800; font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--amber); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-family: var(--display);
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--gray-600); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--black);
+    color: var(--white);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 120px 80px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(232,160,32,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,160,32,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,160,32,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--amber);
+    border: 1px solid rgba(232,160,32,0.4);
+    display: inline-block; padding: 6px 14px;
+    margin-bottom: 32px; width: fit-content;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 800; line-height: 0.92;
+    letter-spacing: -0.04em;
+    max-width: 900px;
+    margin-bottom: 40px;
+  }
+  .hero h1 em { color: var(--amber); font-style: normal; }
+  .hero-sub {
+    font-size: 18px; font-weight: 300;
+    color: rgba(245,243,238,0.65);
+    max-width: 560px; line-height: 1.6;
+    margin-bottom: 56px;
+  }
+  .hero-stats {
+    display: flex; gap: 48px;
+    border-top: 1px solid rgba(245,243,238,0.12);
+    padding-top: 40px;
+  }
+  .hero-stat-val {
+    font-family: var(--display);
+    font-size: 36px; font-weight: 700;
+    color: var(--amber);
+    letter-spacing: -0.03em;
+  }
+  .hero-stat-label {
+    font-size: 13px; color: rgba(245,243,238,0.5);
+    margin-top: 4px; letter-spacing: 0.02em;
+  }
+
+  /* SECTION SYSTEM */
+  section { padding: 100px 80px; }
+  .section-tag {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700; line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .section-intro {
+    font-size: 18px; font-weight: 300;
+    color: var(--gray-600);
+    max-width: 640px; line-height: 1.7;
+    margin-bottom: 64px;
+  }
+
+  /* PROBLEM */
+  .problem { background: var(--gray-100); }
+  .problem-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; background: var(--gray-200);
+    border: 1px solid var(--gray-200);
+  }
+  .problem-card {
+    background: var(--white);
+    padding: 40px;
+  }
+  .problem-card h3 {
+    font-family: var(--display);
+    font-size: 20px; font-weight: 600;
+    margin-bottom: 12px; letter-spacing: -0.02em;
+  }
+  .problem-card p { color: var(--gray-600); font-size: 15px; line-height: 1.7; }
+  .problem-num {
+    font-family: var(--display);
+    font-size: 48px; font-weight: 800;
+    color: var(--amber);
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  /* HOW IT WORKS */
+  .layers { background: var(--white); }
+  .layer-stack { display: flex; flex-direction: column; gap: 2px; }
+  .layer {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: var(--gray-100);
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .layer:hover {
+    border-left-color: var(--amber);
+    background: var(--amber-pale);
+  }
+  .layer-num {
+    padding: 36px 40px;
+    border-right: 1px solid var(--gray-200);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .layer-num-val {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 8px;
+  }
+  .layer-num h3 {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .layer-body { padding: 36px 48px; }
+  .layer-body p { color: var(--gray-600); font-size: 15px; line-height: 1.75; }
+  .layer-body ul { margin-top: 16px; padding-left: 0; list-style: none; }
+  .layer-body ul li {
+    font-size: 14px; color: var(--gray-600);
+    padding: 4px 0 4px 20px; position: relative;
+  }
+  .layer-body ul li::before {
+    content: ''; position: absolute; left: 0; top: 12px;
+    width: 6px; height: 6px;
+    background: var(--amber); border-radius: 50%;
+  }
+
+  /* HONEYCOMB */
+  .honeycomb-section { background: var(--black); color: var(--white); }
+  .honeycomb-section h2 { color: var(--white); }
+  .honeycomb-section .section-intro { color: rgba(245,243,238,0.6); }
+  .channels {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(245,243,238,0.08);
+  }
+  .channel {
+    background: var(--black);
+    padding: 48px 40px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .channel:hover { border-top-color: var(--amber); }
+  .channel-num {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 20px;
+  }
+  .channel h3 {
+    font-family: var(--display);
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white); margin-bottom: 16px;
+  }
+  .channel p { font-size: 14px; color: rgba(245,243,238,0.55); line-height: 1.75; }
+  .channel-spec {
+    margin-top: 24px; padding-top: 24px;
+    border-top: 1px solid rgba(245,243,238,0.08);
+    font-size: 13px; color: rgba(245,243,238,0.35);
+    font-family: var(--display); letter-spacing: 0.02em;
+  }
+
+  /* TECH SPECS */
+  .tech { background: var(--gray-100); }
+  .specs-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .spec-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    padding: 36px;
+  }
+  .spec-card h3 {
+    font-family: var(--display);
+    font-size: 16px; font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .spec-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 14px;
+  }
+  .spec-row:last-child { border-bottom: none; }
+  .spec-key { color: var(--gray-600); }
+  .spec-val {
+    font-family: var(--display);
+    font-weight: 600; font-size: 13px;
+    color: var(--black); text-align: right;
+  }
+  .spec-val.amber { color: var(--amber-dim); }
+
+  /* FINANCIAL */
+  .financial { background: var(--white); }
+  .fin-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: var(--gray-200);
+    margin-bottom: 64px;
+  }
+  .fin-card {
+    background: var(--white);
+    padding: 40px 36px;
+  }
+  .fin-card h3 {
+    font-family: var(--display);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gray-400); margin-bottom: 16px;
+  }
+  .fin-big {
+    font-family: var(--display);
+    font-size: 42px; font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--black); line-height: 1;
+    margin-bottom: 8px;
+  }
+  .fin-big.amber { color: var(--amber-dim); }
+  .fin-big.teal { color: var(--teal); }
+  .fin-sub { font-size: 13px; color: var(--gray-400); }
+
+  .revenue-table { width: 100%; border-collapse: collapse; margin-bottom: 64px; }
+  .revenue-table th {
+    font-family: var(--display);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-400);
+    text-align: left; padding: 12px 16px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .revenue-table td {
+    padding: 16px; font-size: 14px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: top;
+  }
+  .revenue-table tr:hover td { background: var(--gray-100); }
+  .revenue-table td:first-child { font-weight: 500; }
+  .revenue-table td.mono {
+    font-family: var(--display);
+    font-weight: 600; letter-spacing: -0.01em;
+  }
+
+  .projection-bar-wrap { margin-bottom: 64px; }
+  .proj-row {
+    display: grid; grid-template-columns: 60px 1fr 130px;
+    align-items: center; gap: 20px;
+    margin-bottom: 16px;
+  }
+  .proj-year {
+    font-family: var(--display);
+    font-size: 13px; font-weight: 600;
+    color: var(--gray-400);
+  }
+  .proj-bar-bg {
+    height: 28px; background: var(--gray-100);
+    position: relative;
+  }
+  .proj-bar-fill {
+    height: 100%; background: var(--amber);
+    transition: width 0.8s ease;
+  }
+  .proj-val {
+    font-family: var(--display);
+    font-size: 15px; font-weight: 700;
+    text-align: right; letter-spacing: -0.02em;
+  }
+
+  .cost-breakdown {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .cost-section h4 {
+    font-family: var(--display);
+    font-size: 16px; font-weight: 700;
+    margin-bottom: 20px; letter-spacing: -0.01em;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--amber);
+    display: inline-block;
+  }
+  .cost-line {
+    display: flex; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 14px;
+  }
+  .cost-line span:last-child {
+    font-family: var(--display);
+    font-weight: 600; letter-spacing: -0.01em;
+  }
+  .cost-total {
+    display: flex; justify-content: space-between;
+    padding: 14px 0; font-weight: 500;
+    border-top: 2px solid var(--black); margin-top: 4px;
+  }
+  .cost-total span:last-child {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* ROADMAP */
+  .roadmap { background: var(--gray-100); }
+  .phases {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2px; background: var(--gray-200);
+  }
+  .phase {
+    background: var(--white); padding: 40px 32px;
+    position: relative;
+  }
+  .phase-num {
+    font-family: var(--display);
+    font-size: 64px; font-weight: 800;
+    color: var(--gray-100); line-height: 1;
+    margin-bottom: -8px;
+    letter-spacing: -0.06em;
+  }
+  .phase-tag {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px;
+  }
+  .phase h3 {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  .phase ul { list-style: none; padding: 0; }
+  .phase ul li { font-size: 13px; color: var(--gray-600); padding: 5px 0; border-bottom: 1px solid var(--gray-100); }
+  .phase ul li:last-child { border-bottom: none; }
+
+  /* INVESTMENT ASK */
+  .ask { background: var(--black); color: var(--white); }
+  .ask h2 { color: var(--white); }
+  .ask-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: start;
+  }
+  .ask-amount {
+    font-family: var(--display);
+    font-size: 80px; font-weight: 800;
+    color: var(--amber); line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 8px;
+  }
+  .ask-label {
+    font-size: 14px; color: rgba(245,243,238,0.4);
+    margin-bottom: 40px; letter-spacing: 0.04em;
+  }
+  .ask-use { list-style: none; padding: 0; }
+  .ask-use li {
+    display: flex; justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(245,243,238,0.08);
+    font-size: 14px; color: rgba(245,243,238,0.7);
+  }
+  .ask-use li span:last-child {
+    font-family: var(--display);
+    font-weight: 700; color: var(--amber);
+    letter-spacing: -0.01em;
+  }
+  .ask-right p {
+    font-size: 18px; font-weight: 300;
+    color: rgba(245,243,238,0.65);
+    line-height: 1.7; margin-bottom: 32px;
+  }
+  .ask-metrics {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: rgba(245,243,238,0.08);
+  }
+  .ask-metric {
+    background: rgba(245,243,238,0.03);
+    padding: 28px 24px;
+  }
+  .ask-metric-val {
+    font-family: var(--display);
+    font-size: 28px; font-weight: 800;
+    color: var(--white); letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+  .ask-metric-label { font-size: 12px; color: rgba(245,243,238,0.4); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(245,243,238,0.08);
+    padding: 48px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: var(--display);
+    font-size: 22px; font-weight: 800;
+    color: var(--white); letter-spacing: -0.03em;
+  }
+  .footer-logo span { color: var(--amber); }
+  footer p { font-size: 13px; color: rgba(245,243,238,0.3); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px; background: var(--gray-200);
+    margin: 48px 0;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-tag, .hero h1, .hero-sub, .hero-stats {
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero h1      { animation-delay: 0.1s; }
+  .hero-sub     { animation-delay: 0.2s; }
+  .hero-stats   { animation-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    section { padding: 64px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-stats { flex-wrap: wrap; gap: 28px; }
+    .problem-grid, .specs-grid, .fin-grid, .phases, .ask-grid, .channels,
+    .cost-breakdown { grid-template-columns: 1fr; }
+    .layer { grid-template-columns: 1fr; }
+    .layer-num { border-right: none; border-bottom: 1px solid var(--gray-200); }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SENTINEL<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#technology">Technology</a></li>
+    <li><a href="#financials">Financials</a></li>
+    <li><a href="#investment">Investment</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">South Africa — Smart City Infrastructure</div>
+  <h1>The city's<br><em>traffic brain.</em></h1>
+  <p class="hero-sub">Sentinel transforms every traffic light into an intelligent, self-learning node — a network that thinks, communicates, and adapts in real time to keep cities moving.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-val">35%</div>
+      <div class="hero-stat-label">Projected congestion reduction</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">40%</div>
+      <div class="hero-stat-label">Emergency response improvement</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">R60M+</div>
+      <div class="hero-stat-label">Annual savings per major metro</div>
+    </div>
+    <div>
+      <div class="hero-stat-val">R15M</div>
+      <div class="hero-stat-label">Seed investment target</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="overview">
+  <div class="section-tag">The Problem</div>
+  <h2>South Africa's roads are losing the fight against congestion.</h2>
+  <p class="section-intro">Every major South African city is being held back by traffic infrastructure designed in the 1980s. The cost is enormous — and growing every year.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-num">R90M+</div>
+      <h3>Annual maintenance in Johannesburg alone</h3>
+      <p>South African metros spend hundreds of millions each year repairing, replacing, and managing traffic lights — with little to show for it. A single vandalised intersection can cost R300,000 to restore.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">25%</div>
+      <h3>Of intersections non-functional at any given time</h3>
+      <p>Load shedding, cable theft, vandalism, and aging hardware keep a quarter of all intersections in major cities either offline or in degraded flashing mode — requiring traffic officers or causing accidents.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">Zero</div>
+      <h3>Communication between traffic lights today</h3>
+      <p>Every traffic light in the current system operates entirely in isolation. No light knows what the next one is doing. There is no coordination, no prediction, no adaptation — just a fixed timer that has not changed in years.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-num">Billions</div>
+      <h3>Lost annually to congestion-driven economic drag</h3>
+      <p>Delays cost businesses in late deliveries, workers in lost commute hours, and the national economy in reduced productivity. As urbanisation accelerates, the problem only compounds without systemic intervention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="layers" id="how-it-works">
+  <div class="section-tag">The Solution</div>
+  <h2>A living network — four layers working as one.</h2>
+  <p class="section-intro">Sentinel is not a single product. It is a complete intelligent traffic ecosystem, built in four layers that work together from the physical hardware at each intersection all the way to the driver in the car.</p>
+  <div class="layer-stack">
+
+    <div class="layer">
+      <div class="layer-num">
+        <div class="layer-num-val">Layer 01</div>
+        <h3>The Smart Intersection</h3>
+      </div>
+      <div class="layer-body">
+        <p>At the heart of Sentinel is the Honeycomb Cell — a compact intelligent module that replaces or upgrades the control unit inside each existing traffic light cabinet. Rather than following a fixed timer, the Honeycomb Cell reads live traffic conditions through sensors, makes decisions using on-device artificial intelligence, and communicates directly with neighbouring intersections. Each one operates independently, so a failure anywhere does not bring the system down. If power is lost, it falls back to a safe fixed cycle automatically. Think of it as giving every traffic light a brain of its own.</p>
+        <ul>
+          <li>Installed inside the existing signal cabinet — no road works, no new poles</li>
+          <li>Reads vehicle queue lengths, traffic density, and arrival rates in real time</li>
+          <li>Makes timing decisions locally, without waiting for instructions from a server</li>
+          <li>Falls back to a safe pre-programmed cycle if any component fails</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-num">
+        <div class="layer-num-val">Layer 02</div>
+        <h3>The Mesh Network</h3>
+      </div>
+      <div class="layer-body">
+        <p>Honeycomb Cells do not operate in isolation. Each one broadcasts its current state and traffic conditions to its immediate neighbours — the intersections to the north, south, east, and west — every few seconds. When one intersection sees a queue building, it warns the next one downstream so it can prepare. When an emergency vehicle enters the network, a wave of green lights forms ahead of it automatically, block by block, without any central command being needed. This neighbour-to-neighbour communication is what creates the city-wide intelligence — no single point of failure, no central dependency, just a web of intersections that reason together.</p>
+        <ul>
+          <li>Intersections share live queue data, signal states, and predictions with each other</li>
+          <li>Green wave corridors form automatically along busy routes during peak hours</li>
+          <li>Emergency vehicles receive priority through signed corridor tokens passed ahead of them</li>
+          <li>The network continues operating even if the cloud connection is unavailable</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-num">
+        <div class="layer-num-val">Layer 03</div>
+        <h3>The Cloud Intelligence</h3>
+      </div>
+      <div class="layer-body">
+        <p>While the mesh handles real-time decisions, the Sentinel Cloud handles long-term learning. All intersections send anonymised traffic summaries to the cloud platform, which uses machine learning to identify patterns — morning rush on a Tuesday, December holiday volumes, the traffic spike after a major event at Moses Mabhida. These patterns are fed back to intersections as updated timing policies, so the network gradually becomes smarter over months and years. The cloud also powers the operations dashboard that city engineers and maintenance teams use to monitor the health of every intersection in the city.</p>
+        <ul>
+          <li>Learns seasonal patterns, peak-hour behaviour, and event-driven spikes</li>
+          <li>Sends improved timing policies back to intersections as it learns</li>
+          <li>Powers a real-time city operations dashboard for municipal teams</li>
+          <li>Stores no personal data — only anonymised, aggregated traffic counts</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-num">
+        <div class="layer-num-val">Layer 04</div>
+        <h3>The Driver App</h3>
+      </div>
+      <div class="layer-body">
+        <p>Sentinel's intelligence extends to the people driving through it. The Sentinel app gives drivers something no navigation app currently can — traffic data sourced directly from the infrastructure itself, not estimated from GPS traces. Drivers can see which intersections are operational, which are in fault mode, where congestion is building, and receive alerts when an emergency vehicle is nearby. A premium tier offers green-wave routing, telling drivers the precise speed to maintain to hit a sequence of green lights without stopping. This is the consumer-facing product that turns Sentinel from a municipal infrastructure play into a daily-use brand.</p>
+        <ul>
+          <li>Live status of every intersection — operational, degraded, or offline</li>
+          <li>Real-time congestion heatmap drawn from infrastructure data, not GPS estimation</li>
+          <li>Emergency vehicle alerts so drivers know to create a clear path</li>
+          <li>Premium green-wave routing: the exact speed to sail through without stopping</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HONEYCOMB CHANNELS -->
+<section class="honeycomb-section">
+  <div class="section-tag">Core Technology</div>
+  <h2>The Honeycomb Cell — three channels, one module.</h2>
+  <p class="section-intro">The Honeycomb Cell is Sentinel's patent-pending hardware module. What makes it unique is its tri-channel architecture — three completely independent communication systems running simultaneously inside a single unit the size of a small hardcover book.</p>
+  <div class="channels">
+    <div class="channel">
+      <div class="channel-num">Channel 01</div>
+      <h3>Peer-to-peer mesh</h3>
+      <p>The reflex channel. Runs the DDS real-time protocol used in autonomous vehicles and industrial robotics. Intersections share live queue data with neighbours every one to five seconds, negotiate timing adjustments through a weighted consensus algorithm, and coordinate green waves — all without any involvement from a central server. Sub-50 millisecond latency. If the internet goes down, this channel keeps the city coordinated.</p>
+      <div class="channel-spec">Protocol: Cyclone DDS over WiFi mesh / LoRa — Latency: &lt;50ms</div>
+    </div>
+    <div class="channel">
+      <div class="channel-num">Channel 02</div>
+      <h3>Relay and duplication</h3>
+      <p>The connective channel. Each Honeycomb Cell does not just receive peer messages — it duplicates and relays them further into the network. This is what allows a signal from one side of the city to propagate across the mesh without requiring a central router. Built on the Zenoh data fabric protocol, this channel also bridges the local mesh to the cloud, translating between the real-time peer protocol and the cloud communication format seamlessly.</p>
+      <div class="channel-spec">Protocol: Zenoh data fabric — Role: DDS-to-MQTT bridge and relay</div>
+    </div>
+    <div class="channel">
+      <div class="channel-num">Channel 03</div>
+      <h3>Cloud uplink</h3>
+      <p>The memory channel. Sends periodic health summaries, traffic logs, and AI decision traces to the Sentinel Cloud over LTE, 5G, or fibre — whichever is available. Receives updated timing policies and model improvements in return. This channel is deliberately kept separate from the real-time mesh, so a cloud outage or slow network connection has zero impact on the intersection's ability to function and coordinate with its neighbours.</p>
+      <div class="channel-spec">Protocol: MQTT over LTE-M / 5G / fibre — Encrypted: AES-256 + mTLS</div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICAL SPECS -->
+<section class="tech" id="technology">
+  <div class="section-tag">Technical Specifications</div>
+  <h2>Built to municipal grade — from day one.</h2>
+  <p class="section-intro">Sentinel is designed not as a prototype but as a deployable infrastructure product. Every component is specified for the conditions South African municipalities actually face: power instability, high temperatures, vandalism, and variable connectivity.</p>
+  <div class="specs-grid">
+
+    <div class="spec-card">
+      <h3>Honeycomb Cell — hardware</h3>
+      <div class="spec-row"><span class="spec-key">Main processor</span><span class="spec-val">ESP32-S3 dual-core, 2.4GHz ARM</span></div>
+      <div class="spec-row"><span class="spec-key">AI inference engine</span><span class="spec-val">TensorFlow Lite / ONNX Runtime</span></div>
+      <div class="spec-row"><span class="spec-key">Primary radio</span><span class="spec-val">WiFi 802.11s mesh, 2.4 / 5GHz</span></div>
+      <div class="spec-row"><span class="spec-key">Long-range fallback</span><span class="spec-val">LoRa SX1276 (2km+ range)</span></div>
+      <div class="spec-row"><span class="spec-key">Cloud uplink</span><span class="spec-val">Quectel BG95 LTE-M / NB-IoT</span></div>
+      <div class="spec-row"><span class="spec-key">Security element</span><span class="spec-val">ATECC608 hardware crypto chip</span></div>
+      <div class="spec-row"><span class="spec-key">Signal interface</span><span class="spec-val">Solid-state relays, opto-isolated</span></div>
+      <div class="spec-row"><span class="spec-key">Power input</span><span class="spec-val">220V AC with LiFePO4 UPS backup</span></div>
+      <div class="spec-row"><span class="spec-key">Operating temperature</span><span class="spec-val">-10°C to 60°C</span></div>
+      <div class="spec-row"><span class="spec-key">Enclosure rating</span><span class="spec-val">IP65 aluminium, anti-tamper</span></div>
+    </div>
+
+    <div class="spec-card">
+      <h3>Network and communication</h3>
+      <div class="spec-row"><span class="spec-key">Real-time protocol</span><span class="spec-val">Cyclone DDS (brokered-less)</span></div>
+      <div class="spec-row"><span class="spec-key">Data fabric</span><span class="spec-val">Zenoh (relay and bridging)</span></div>
+      <div class="spec-row"><span class="spec-key">Cloud protocol</span><span class="spec-val">MQTT over TLS</span></div>
+      <div class="spec-row"><span class="spec-key">Peer message interval</span><span class="spec-val">1 – 5 seconds (adaptive)</span></div>
+      <div class="spec-row"><span class="spec-key">Coordination latency</span><span class="spec-val">Under 50ms node-to-node</span></div>
+      <div class="spec-row"><span class="spec-key">Timing plan commit</span><span class="spec-val">Under 200ms end-to-end</span></div>
+      <div class="spec-row"><span class="spec-key">Encryption</span><span class="spec-val">AES-256 + mutual TLS</span></div>
+      <div class="spec-row"><span class="spec-key">Authentication</span><span class="spec-val">TPM-backed certificates, rotating</span></div>
+      <div class="spec-row"><span class="spec-key">Mesh topology</span><span class="spec-val">K-nearest neighbour, self-healing</span></div>
+      <div class="spec-row"><span class="spec-key">Node uptime target</span><span class="spec-val">99.5% SLA</span></div>
+    </div>
+
+    <div class="spec-card">
+      <h3>AI and intelligence</h3>
+      <div class="spec-row"><span class="spec-key">Local AI type</span><span class="spec-val">Reinforcement learning policy</span></div>
+      <div class="spec-row"><span class="spec-key">Algorithm</span><span class="spec-val">Actor-critic (PPO / SAC)</span></div>
+      <div class="spec-row"><span class="spec-key">Prediction horizon</span><span class="spec-val">15 seconds, 60 seconds ahead</span></div>
+      <div class="spec-row"><span class="spec-key">Coordination method</span><span class="spec-val">Weighted gossip consensus</span></div>
+      <div class="spec-row"><span class="spec-key">Training environment</span><span class="spec-val">SUMO traffic simulator (digital twin)</span></div>
+      <div class="spec-row"><span class="spec-key">City-level model</span><span class="spec-val">Graph Neural Network (GNN)</span></div>
+      <div class="spec-row"><span class="spec-key">Model update method</span><span class="spec-val">OTA signed deployment</span></div>
+      <div class="spec-row"><span class="spec-key">Safety enforcement</span><span class="spec-val">Hardware envelope, non-overridable</span></div>
+    </div>
+
+    <div class="spec-card">
+      <h3>Software stack</h3>
+      <div class="spec-row"><span class="spec-key">Edge OS</span><span class="spec-val">FreeRTOS on ESP32-S3</span></div>
+      <div class="spec-row"><span class="spec-key">Edge language</span><span class="spec-val">C / C++ with Rust for core</span></div>
+      <div class="spec-row"><span class="spec-key">ML pipeline</span><span class="spec-val">Python, PyTorch, Stable-Baselines3</span></div>
+      <div class="spec-row"><span class="spec-key">Cloud backend</span><span class="spec-val">FastAPI, PostgreSQL, TimescaleDB</span></div>
+      <div class="spec-row"><span class="spec-key">Operations dashboard</span><span class="spec-val">React, Grafana, Mapbox</span></div>
+      <div class="spec-row"><span class="spec-key">Cloud hosting</span><span class="spec-val">AWS / Azure (multi-region)</span></div>
+      <div class="spec-row"><span class="spec-key">Simulation tool</span><span class="spec-val">SUMO (open-source urban mobility)</span></div>
+      <div class="spec-row"><span class="spec-key">OTA delivery</span><span class="spec-val">Signed, staged canary rollout</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINANCIALS -->
+<section class="financial" id="financials">
+  <div class="section-tag">Financial Analysis</div>
+  <h2>The numbers behind the opportunity.</h2>
+  <p class="section-intro">South African municipalities are already spending enormous sums maintaining a broken system. Sentinel does not ask them to spend more — it redirects that spending toward infrastructure that actually pays them back.</p>
+
+  <!-- Summary cards -->
+  <div class="fin-grid">
+    <div class="fin-card">
+      <h3>Total addressable market</h3>
+      <div class="fin-big">R450B</div>
+      <div class="fin-sub">Global smart traffic management, 2025–2032</div>
+    </div>
+    <div class="fin-card">
+      <h3>SA metro opportunity</h3>
+      <div class="fin-big amber">R2.4B</div>
+      <div class="fin-sub">Across 6 major metros, full retrofit potential</div>
+    </div>
+    <div class="fin-card">
+      <h3>Projected gross margin</h3>
+      <div class="fin-big teal">82%</div>
+      <div class="fin-sub">Software-heavy model scales with no unit cost increase</div>
+    </div>
+  </div>
+
+  <!-- Revenue streams table -->
+  <h3 style="font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px;">Revenue streams</h3>
+  <table class="revenue-table">
+    <thead>
+      <tr>
+        <th>Stream</th>
+        <th>Model</th>
+        <th>Target pricing</th>
+        <th>Margin</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Municipal SaaS licence</td>
+        <td>Monthly per intersection</td>
+        <td class="mono">R40 – R70 / node / month</td>
+        <td class="mono">88 – 92%</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Core recurring revenue. Scales directly with deployment size. Includes AI engine, dashboard, and support.</td>
+      </tr>
+      <tr>
+        <td>Hardware upgrade kit</td>
+        <td>One-time per intersection</td>
+        <td class="mono">R2,500 – R4,500 / node</td>
+        <td class="mono">25 – 35%</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Honeycomb Cell module, sensors, and installation. Margin improves significantly at scale with local manufacturing.</td>
+      </tr>
+      <tr>
+        <td>Installation and integration</td>
+        <td>Project-based</td>
+        <td class="mono">R5,000 – R15,000 / node</td>
+        <td class="mono">35 – 50%</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Covers wiring, cabinet modification, legacy controller integration, commissioning, and staff training.</td>
+      </tr>
+      <tr>
+        <td>Driver app — premium</td>
+        <td>Monthly subscription</td>
+        <td class="mono">R49 – R99 / user / month</td>
+        <td class="mono">85%+</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Green-wave routing, predictive ETA, early congestion alerts. Free tier drives user acquisition and municipal adoption.</td>
+      </tr>
+      <tr>
+        <td>B2B traffic data API</td>
+        <td>Monthly access licence</td>
+        <td class="mono">R8,000 – R35,000 / month</td>
+        <td class="mono">92 – 96%</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Anonymised real-time and historical traffic intelligence sold to logistics operators, insurers, retailers, and event planners.</td>
+      </tr>
+      <tr>
+        <td>Emergency services integration</td>
+        <td>Annual licence</td>
+        <td class="mono">R250,000 – R800,000 / metro / year</td>
+        <td class="mono">90%+</td>
+        <td style="color: var(--gray-400); font-size: 13px;">Dedicated emergency corridor API and preemption token system for SAPS, EMS, and fire services.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 5-year projection bars -->
+  <h3 style="font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 32px;">Five-year revenue projection</h3>
+  <div class="projection-bar-wrap">
+    <div class="proj-row">
+      <div class="proj-year">Year 1</div>
+      <div class="proj-bar-bg"><div class="proj-bar-fill" style="width: 2%"></div></div>
+      <div class="proj-val">R3.5M</div>
+    </div>
+    <div class="proj-row">
+      <div class="proj-year">Year 2</div>
+      <div class="proj-bar-bg"><div class="proj-bar-fill" style="width: 7%"></div></div>
+      <div class="proj-val">R12M</div>
+    </div>
+    <div class="proj-row">
+      <div class="proj-year">Year 3</div>
+      <div class="proj-bar-bg"><div class="proj-bar-fill" style="width: 28%"></div></div>
+      <div class="proj-val">R50M</div>
+    </div>
+    <div class="proj-row">
+      <div class="proj-year">Year 4</div>
+      <div class="proj-bar-bg"><div class="proj-bar-fill" style="width: 56%"></div></div>
+      <div class="proj-val">R100M</div>
+    </div>
+    <div class="proj-row">
+      <div class="proj-year">Year 5</div>
+      <div class="proj-bar-bg"><div class="proj-bar-fill" style="width: 100%"></div></div>
+      <div class="proj-val">R180M</div>
+    </div>
+  </div>
+
+  <!-- Cost breakdown -->
+  <h3 style="font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 32px;">Per-intersection cost model</h3>
+  <div class="cost-breakdown">
+    <div class="cost-section">
+      <h4>Capital cost — one-time per node</h4>
+      <div class="cost-line"><span>Honeycomb Cell module (hardware)</span><span>R1,800 – R3,200</span></div>
+      <div class="cost-line"><span>Sensor package (camera / loops)</span><span>R800 – R2,000</span></div>
+      <div class="cost-line"><span>LTE-M / LoRa communication module</span><span>R400 – R900</span></div>
+      <div class="cost-line"><span>UPS battery backup</span><span>R700 – R1,400</span></div>
+      <div class="cost-line"><span>Installation, wiring, integration</span><span>R5,000 – R15,000</span></div>
+      <div class="cost-total"><span>Total per intersection (retrofit)</span><span>R8,700 – R22,500</span></div>
+    </div>
+    <div class="cost-section">
+      <h4>Operational cost — annual per node</h4>
+      <div class="cost-line"><span>Sentinel SaaS platform licence</span><span>R480 – R840</span></div>
+      <div class="cost-line"><span>Cloud compute and storage</span><span>R60 – R120</span></div>
+      <div class="cost-line"><span>Cellular data (LTE-M)</span><span>R80 – R180</span></div>
+      <div class="cost-line"><span>Preventative maintenance visit</span><span>R200 – R400</span></div>
+      <div class="cost-line"><span>Remote monitoring and support</span><span>R120 – R240</span></div>
+      <div class="cost-total"><span>Total per intersection per year</span><span>R940 – R1,780</span></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ROI summary -->
+  <h3 style="font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px;">Municipal ROI — example: 500 intersections</h3>
+  <div class="fin-grid">
+    <div class="fin-card">
+      <h3>Total deployment cost</h3>
+      <div class="fin-big" style="font-size:32px">R6M – R11M</div>
+      <div class="fin-sub">One-time capital. Hardware, installation, integration across 500 nodes.</div>
+    </div>
+    <div class="fin-card">
+      <h3>Annual operating cost</h3>
+      <div class="fin-big amber" style="font-size:32px">R470K – R890K</div>
+      <div class="fin-sub">Platform licence, cloud, cellular, and maintenance per year.</div>
+    </div>
+    <div class="fin-card">
+      <h3>Annual savings generated</h3>
+      <div class="fin-big teal" style="font-size:32px">R40M – R60M</div>
+      <div class="fin-sub">From reduced repairs, fewer outages, less manual intervention, and congestion relief.</div>
+    </div>
+  </div>
+  <p style="margin-top: 24px; font-size: 15px; color: var(--gray-600); max-width: 720px; line-height: 1.75;">At these figures, a municipality deploying Sentinel across 500 intersections recovers its full capital investment within <strong>two to four months</strong> of live operation — purely from the reduction in emergency repair callouts and traffic officer deployments, before any congestion-related economic gains are counted.</p>
+
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap">
+  <div class="section-tag">Deployment Roadmap</div>
+  <h2>From lab bench to living city.</h2>
+  <p class="section-intro">Sentinel is built to be deployed incrementally. A city does not need to commit to full rollout to prove value — two intersections are enough to demonstrate the core intelligence working in the real world.</p>
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-num">01</div>
+      <div class="phase-tag">Months 0 – 3</div>
+      <h3>Lab and simulation</h3>
+      <ul>
+        <li>Digital twin of pilot area built in SUMO</li>
+        <li>AI policy trained in simulation</li>
+        <li>Hardware prototype validated on bench</li>
+        <li>University research partnership formalised</li>
+        <li>Regulatory pre-engagement with municipalities</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">02</div>
+      <div class="phase-tag">Months 3 – 9</div>
+      <h3>Pilot deployment</h3>
+      <ul>
+        <li>3 – 5 live intersections in Durban or Johannesburg</li>
+        <li>Four weeks shadow mode before live control</li>
+        <li>Real-time performance data collected</li>
+        <li>Municipal sign-off on safety protocols</li>
+        <li>Driver app alpha released to test users</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">03</div>
+      <div class="phase-tag">Months 9 – 18</div>
+      <h3>City cluster rollout</h3>
+      <ul>
+        <li>50 – 300 intersections per target city</li>
+        <li>Cluster coordinator engaged for GNN optimisation</li>
+        <li>Emergency services integration live</li>
+        <li>B2B data API launched to first clients</li>
+        <li>Municipal SaaS contract signed</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">04</div>
+      <div class="phase-tag">Months 18 – 36+</div>
+      <h3>National and regional scale</h3>
+      <ul>
+        <li>Citywide rollout across 3 major metros</li>
+        <li>SADC regional expansion begins</li>
+        <li>OEM licensing to hardware partners</li>
+        <li>GCC market entry with partner</li>
+        <li>Series A fundraise targeting R80M+</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section class="ask" id="investment">
+  <div class="section-tag">Investment Opportunity</div>
+  <h2>Build the nervous system of the African smart city.</h2>
+  <div class="ask-grid">
+    <div>
+      <div class="ask-amount">R15M</div>
+      <div class="ask-label">Seed round — 18-month runway</div>
+      <ul class="ask-use">
+        <li><span>AI engine and platform development</span><span>R3.5M</span></li>
+        <li><span>Hardware prototyping and certification</span><span>R2.8M</span></li>
+        <li><span>Municipal pilot deployment (3 – 5 intersections)</span><span>R2.2M</span></li>
+        <li><span>Engineering and technical talent</span><span>R3.0M</span></li>
+        <li><span>Cloud infrastructure and security</span><span>R1.2M</span></li>
+        <li><span>Legal, regulatory, and IP filings</span><span>R0.8M</span></li>
+        <li><span>Sales, partnerships, and BD</span><span>R1.5M</span></li>
+      </ul>
+    </div>
+    <div class="ask-right">
+      <p>Sentinel is seeking R15 million in seed funding to complete the AI platform, certify the hardware, and deploy a live municipal pilot. The pilot will generate measurable, verifiable performance data — congestion reduction percentages, maintenance cost comparisons, emergency response improvements — that serve as the foundation for Series A.</p>
+      <p>This is not a speculative technology bet. The core problem is enormous, the cost of inaction is documented and growing, and the technical approach draws on proven components from autonomous vehicle engineering and industrial IoT. We are applying known tools to an unsolved civic problem at exactly the right moment.</p>
+      <div class="ask-metrics">
+        <div class="ask-metric">
+          <div class="ask-metric-val">18 mo</div>
+          <div class="ask-metric-label">Runway to Series A milestone</div>
+        </div>
+        <div class="ask-metric">
+          <div class="ask-metric-val">5 yr</div>
+          <div class="ask-metric-label">Path to R180M annual revenue</div>
+        </div>
+        <div class="ask-metric">
+          <div class="ask-metric-val">82%</div>
+          <div class="ask-metric-label">Target gross margin at scale</div>
+        </div>
+        <div class="ask-metric">
+          <div class="ask-metric-val">2 – 4 mo</div>
+          <div class="ask-metric-label">Municipal payback period</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">SENTINEL<span>.</span></div>
+  <p>Intelligent Traffic Intelligence — South Africa</p>
+  <p>Confidential. For authorised recipient use only.</p>
+</footer>
+
+<script>
+  const bars = document.querySelectorAll('.proj-bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.style.width;
+      }
+    });
+  }, { threshold: 0.1 });
+  bars.forEach(b => observer.observe(b));
+</script>
+</body>
+</html>
